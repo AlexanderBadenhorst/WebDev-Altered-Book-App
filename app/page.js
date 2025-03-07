@@ -1,9 +1,9 @@
-import Books from "./components/Books";
+import Quotes from "./components/Books";
 
 const HomePage = () => {
   return (
     <>
-      <Books />
+      <Quotes />
     </>
   );
 };

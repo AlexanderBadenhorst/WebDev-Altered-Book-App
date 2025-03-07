@@ -2,11 +2,12 @@
 
 import { useState } from "react";
 
-const AddBook = ({ refreshBooks }) => {
+const AddQuote = ({ refreshQuotes }) => {
   const [modalOpen, setModalOpen] = useState(false);
-  const [newBookTitle, setNewBookTitle] = useState("");
+  const [newQuoteText, setNewQuoteText] = useState("");
+  const [newQuoteAuthor, setNewQuoteAuthor] = useState("");
 
-  const handleSubmitNewBook = async (e) => {
+  const handleSubmitNewQuote = async (e) => {
     e.preventDefault();
     const res = await fetch(`/api/books/`, {
       method: "POST",
@@ -14,59 +15,60 @@ const AddBook = ({ refreshBooks }) => {
         "Content-type": "application/json",
       },
       body: JSON.stringify({
-        title: newBookTitle,
-        link: " https://www.amazon.com/dp/B0979MGJ5J",
-        img: "https://via.placeholder.com/600/92c952 ",
+        text: newQuoteText,
+        author: newQuoteAuthor,
       }),
     });
     if (res.ok) {
-      setNewBookTitle("");
+      setNewQuoteText("");
+      setNewQuoteAuthor("");
       setModalOpen(false);
-      refreshBooks();
+      refreshQuotes();
     }
   };
 
   return (
     <div>
       <button className="btn" onClick={() => setModalOpen(true)}>
-        {" "}
-        Add Book
-      </button>{" "}
+        Add Quote
+      </button>
       <dialog
         id="my_modal_3"
         className={`modal ${modalOpen ? "modal-open" : ""}`}
       >
-        {" "}
         <form
           method="dialog"
           className="modal-box"
-          onSubmit={handleSubmitNewBook}
+          onSubmit={handleSubmitNewQuote}
         >
-          {" "}
           <button
             onClick={() => setModalOpen(false)}
             htmlFor="my-modal-3"
-            className="btn btn-sm btn-circle btn-ghost absolute right-
-    2 top-2"
+            className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
           >
-            {" "}
             ✕
-          </button>{" "}
-          <h3 className="font-bold text-lg">Add New Book</h3>
+          </button>
+          <h3 className="font-bold text-lg">Add New Quote</h3>
           <input
             type="text"
-            value={newBookTitle}
-            onChange={(e) => setNewBookTitle(e.target.value)}
-            placeholder="Enter New Book Title"
+            value={newQuoteText}
+            onChange={(e) => setNewQuoteText(e.target.value)}
+            placeholder="Enter New Quote"
             className="input input-bordered w-full max-w-xs"
-          />{" "}
+          />
+          <input
+            type="text"
+            value={newQuoteAuthor}
+            onChange={(e) => setNewQuoteAuthor(e.target.value)}
+            placeholder="Enter Author"
+            className="input input-bordered w-full max-w-xs"
+          />
           <button type="submit" className="btn btn-primary">
-            {" "}
-            Add Book
+            Add Quote
           </button>
         </form>
       </dialog>
     </div>
   );
 };
-export default AddBook;
+export default AddQuote;

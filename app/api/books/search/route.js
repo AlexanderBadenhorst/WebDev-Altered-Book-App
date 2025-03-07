@@ -6,8 +6,8 @@ export async function GET(req) {
   const query = searchParams.get("query");
   const client = await clientPromise;
   const db = client.db("mydatabase");
-  const filteredBooks = await db.collection("books").find({
-    title: { $regex: query, $options: "i" },
+  const filteredQuotes = await db.collection("quotes").find({
+    text: { $regex: query, $options: "i" },
   }).toArray();
-  return NextResponse.json(filteredBooks);
+  return NextResponse.json(filteredQuotes);
 }

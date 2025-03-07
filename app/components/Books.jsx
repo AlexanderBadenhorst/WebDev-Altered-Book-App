@@ -1,24 +1,23 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Link from "next/link";
 import LoadingPage from "../loading";
-import AddBook from "./AddBook";
+import AddQuote from "./AddBook";
 
-const Books = () => {
-  const [books, setBooks] = useState([]);
+const Quotes = () => {
+  const [quotes, setQuotes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [query, setQuery] = useState("");
 
-  const fetchBooks = async () => {
-    const res = await fetch("/api/books"); //
-    const books = await res.json();
-    setBooks(books);
+  const fetchQuotes = async () => {
+    const res = await fetch("/api/books");
+    const quotes = await res.json();
+    setQuotes(quotes);
     setLoading(false);
   };
 
   useEffect(() => {
-    fetchBooks();
+    fetchQuotes();
   }, []);
 
   if (loading) {
@@ -29,20 +28,20 @@ const Books = () => {
     e.preventDefault();
     setLoading(true);
     const res = await fetch(`/api/books/search?query=${query}`);
-    const books = await res.json();
-    setBooks(books);
+    const quotes = await res.json();
+    setQuotes(quotes);
     setLoading(false);
   };
 
-  const deleteBook = async (id) => {
-    console.log(`Deleting book with id: ${id}`); // Log the id
+  const deleteQuote = async (id) => {
+    console.log(`Deleting quote with id: ${id}`);
     const res = await fetch(`/api/books/${id}`, {
       method: "DELETE",
     });
     if (res.ok) {
-      fetchBooks();
+      fetchQuotes();
     } else {
-      console.error(`Failed to delete book with id: ${id}`);
+      console.error(`Failed to delete quote with id: ${id}`);
     }
   };
 
@@ -51,7 +50,7 @@ const Books = () => {
       <form onSubmit={handleSubmit}>
         <input
           type="text"
-          placeholder="Search Books..."
+          placeholder="Search Quotes..."
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           className="input input-bordered w-full max-w-xs"
@@ -60,22 +59,16 @@ const Books = () => {
           Search
         </button>
       </form>
-      <AddBook refreshBooks={fetchBooks} />
-      {books.map((book) => (
-        <div key={book.id}>
+      <AddQuote refreshQuotes={fetchQuotes} />
+      {quotes.map((quote) => (
+        <div key={quote._id}>
           <div className="card w-96 bg-base-100 shadow-xl">
-            <figure>
-              <img src={book.img} width="200" height="150" />
-            </figure>
             <div className="card-body">
-              <h2 className="card-title">{book.title}</h2>
-              <p>{book.title}</p>
+              <h2 className="card-title">{quote.text}</h2>
+              <p className="text-gray-500">- {quote.author}</p>
               <div className="card-actions justify-end">
-                <Link href={book.link} className="btn btn-primary">
-                  See in Amazon
-                </Link>
                 <button
-                  onClick={() => deleteBook(book._id)}
+                  onClick={() => deleteQuote(quote._id)}
                   className="btn btn-error"
                 >
                   Delete
@@ -90,4 +83,4 @@ const Books = () => {
   );
 };
 
-export default Books;
+export default Quotes;

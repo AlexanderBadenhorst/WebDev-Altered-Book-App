@@ -10,9 +10,15 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Book{
-id String @id @default(uuid())
-title String
-link String
-img String
+model Book {
+  id    String @id @default(uuid())
+  title String
+  link  String
+  img   String
+}
+
+model Quote {
+  id     String @id @default(uuid())
+  text   String
+  author String
 }

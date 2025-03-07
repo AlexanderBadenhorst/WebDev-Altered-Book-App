@@ -11,6 +11,6 @@ export async function DELETE(request, { params }) {
     return NextResponse.json({ error: "Invalid ID" }, { status: 400 });
   }
 
-  await db.collection("books").deleteOne({ _id: new ObjectId(id) });
-  return NextResponse.json({ message: "Book deleted successfully" });
+  await db.collection("quotes").deleteOne({ _id: new ObjectId(id) });
+  return NextResponse.json({ message: "Quote deleted successfully" });
 }
